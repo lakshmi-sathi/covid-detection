@@ -1,21 +1,23 @@
 from random import randrange
 import pickle 
+#Code is used to take predictions on saved model
 
+
+#load data
 data = []
 fp = open('corona_data_processed.csv')
 feats = fp.readline()
 i = 0
 for line in fp:
     line = line[:-1]
-    #print(line.split(","))
     try:
         data.append([int(l) for l in line.split(",")])
     except:
         print (line.split(","),line,i)
-    i = i +1
-
+    i = i + 1
  
-# Make a prediction with a decision tree
+
+#Take prediction
 def predict(node, row):
 	if row[node['index']] < node['value']:
 		if isinstance(node['left'], dict):
@@ -27,11 +29,20 @@ def predict(node, row):
 			return predict(node['right'], row)
 		else:
 			return node['right']
- 
-tp = open("saved_tree","rb")
-tree = pickle.load(tp)
-test =  data[20000:20100]
 
+
+#Try taking prediction on a single sample 
+def try_sample(sample):
+	print(sample[:-1],"=>",sample[-1])
+	print(predict(tree,sample))
+
+
+#Load saved model
+tp = open("saved_tree_backup","rb")
+tree = pickle.load(tp)
+
+
+#Predict on a test set using the model
 def test_samples(tree,test):
 	predictions = []
 	for row in test:
@@ -39,32 +50,18 @@ def test_samples(tree,test):
 		predictions.append(prediction)
 	return predictions
 
+
+#Take the accuracy
 def test_score(test, predictions):
 	correct = 0
 	for i in range(len(test)):
 		if test[i][-1] == predictions[i]:
 			correct += 1
-	scores = correct / float(len(test)) * 100.0
-	return scores
-
-prediction = test_samples(tree,test)
-print(prediction)
-score = test_score(test, prediction)
+	accuracy = correct / float(len(test)) * 100.0
+	return accuracy
 
 
+#Take accuracy with entire data as test set
+prediction = test_samples(tree,data)
+score = test_score(data, prediction)
 print('Scores: %s' % score)
-
-samples = []
-for i in data[30000:30100]:
-	if i[-1] == 1:
-		samples.append(i)
-
-prediction = test_samples(tree,samples)
-print(prediction)
-score = test_score(samples, prediction)
-
-def try_sample(sample):
-	print(sample[:-1],"=>",sample[-1])
-	print(predict(tree,sample))
-
-#try_sample(data[2151876])

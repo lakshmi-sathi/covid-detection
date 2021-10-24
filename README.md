@@ -1,1 +1,1 @@
-# covid-detection-android
+# covid-detection

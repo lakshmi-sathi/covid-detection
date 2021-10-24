@@ -128,8 +128,8 @@ def decision_tree(train, test, max_depth, min_size):
 count = 0
 samples = []
 #Selecting subset of data for balancing the classes and shuffling
-for i in data[:10000]:
-	if count < 100:
+for i in data:
+	if count < 2000:
 		if i[-1] == 0:
 			samples.append(i)
 			count = count + 1
@@ -137,7 +137,7 @@ for i in data[:10000]:
 		break
 count = 0
 for i in data:
-	if count < 100:
+	if count < 2000:
 		if i[-1] == 1:
 			samples.append(i)
 			count = count + 1
@@ -145,7 +145,7 @@ for i in data:
 		break
 random.shuffle(samples)
 
-max_depth = 5
+max_depth = 16
 min_size = 10
 #Run the decision tree and take accuracy
 def train_dt(samples, algo, max_depth, min_size):

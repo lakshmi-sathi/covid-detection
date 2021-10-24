@@ -1,4 +1,5 @@
 from random import randrange
+import random
 import pickle 
 #Code is used to take predictions on saved model
 
@@ -38,7 +39,7 @@ def try_sample(sample):
 
 
 #Load saved model
-tp = open("saved_tree_backup","rb")
+tp = open("saved_tree","rb")
 tree = pickle.load(tp)
 
 
@@ -60,8 +61,27 @@ def test_score(test, predictions):
 	accuracy = correct / float(len(test)) * 100.0
 	return accuracy
 
+count = 0
+samples = []
+#Selecting subset of data for balancing the classes and shuffling
+for i in data[80000:]:
+	if count < 10000:
+		if i[-1] == 0:
+			samples.append(i)
+			count = count + 1
+	else:
+		break
+count = 0
+for i in data[80000:]:
+	if count < 10000:
+		if i[-1] == 1:
+			samples.append(i)
+			count = count + 1
+	else:
+		break
+random.shuffle(samples)
 
 #Take accuracy with entire data as test set
-prediction = test_samples(tree,data)
-score = test_score(data, prediction)
+prediction = test_samples(tree,samples)
+score = test_score(samples, prediction)
 print('Scores: %s' % score)

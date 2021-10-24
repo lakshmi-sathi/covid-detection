@@ -37,7 +37,7 @@ contact =
 #Form it into a sample
 data_sample = [cough, fever, sore_throat, shortness_of_breath, head_ache, age_above_60, gender, contact]
 """
-data_sample = [1,0,0,0,0,0,0,0]
+data_sample = [1,0,1,0,1,0,0,1]
 
 #Load saved model
 tp = open("saved_tree","rb")

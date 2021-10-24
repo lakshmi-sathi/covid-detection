@@ -164,7 +164,10 @@ def decision_tree(train, test, max_depth, min_size):
 n_folds = 2
 max_depth = 5
 min_size = 10
-print(data[:100])
+print(data[:10000])
+
+for i in data[:10000]:
+    if 
 scores = evaluate_algorithm(data[:100], decision_tree, n_folds, max_depth, min_size)
 print('Scores: %s' % scores)
 print('Mean Accuracy: %.3f%%' % (sum(scores)/float(len(scores))))
